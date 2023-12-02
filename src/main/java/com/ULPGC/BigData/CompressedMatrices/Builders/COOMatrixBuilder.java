@@ -4,7 +4,6 @@ import com.ULPGC.BigData.CompressedMatrices.Matrices.COO;
 import com.ULPGC.BigData.CompressedMatrices.Matrices.Coordinate;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class COOMatrixBuilder implements CompressedMatrixBuilder{
@@ -16,16 +15,16 @@ public class COOMatrixBuilder implements CompressedMatrixBuilder{
     }
 
     @Override
-    public void compress(List<Coordinate> coordinates, List<Integer> size) {
-        Comparator<Coordinate> coordinateComparator = Comparator.comparingInt(Coordinate::row);
-        coordinates.sort(coordinateComparator);
+    public void compress(double[][] coordinates, List<Integer> size) {
         List<Coordinate> coordinateList = new ArrayList<>();
-        for (Coordinate coordinate: coordinates){
-            if (coordinate.value() != 0){
-                coordinateList.add(coordinate);
+        for (int i = 0; i < size.get(0);i++){
+            for (int j = 0; j < size.get(1);j++){
+                if (coordinates[i][j] != 0){
+                    coordinateList.add(new Coordinate(i,j,coordinates[i][j]));
+                }
             }
         }
-        matrixCoordinates = coordinateList;
         matrixSize = size;
+        matrixCoordinates = coordinateList;
     }
 }
