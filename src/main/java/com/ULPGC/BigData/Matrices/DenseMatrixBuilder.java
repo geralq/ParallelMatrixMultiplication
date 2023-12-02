@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DenseMatrixBuilder {
 
-    DenseMatrix build(List<Coordinate> coordinates, List<Integer> size) {
+    public DenseMatrix build(List<Coordinate> coordinates, List<Integer> size) {
         int rows = size.get(0);
         int cols = size.get(1);
 

@@ -2,7 +2,7 @@ package com.ULPGC.BigData.Matrices;
 
 import java.util.List;
 
-public class DenseMatrix extends Matrix{
+public class DenseMatrix implements Matrix{
     private final double[][] values;
 
     private final List<Integer> size;
