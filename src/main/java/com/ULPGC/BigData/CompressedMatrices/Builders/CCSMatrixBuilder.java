@@ -1,7 +1,6 @@
 package com.ULPGC.BigData.CompressedMatrices.Builders;
 
 import com.ULPGC.BigData.CompressedMatrices.Matrices.CCS;
-import com.ULPGC.BigData.CompressedMatrices.Matrices.CRS;
 
 import java.util.List;
 
@@ -10,8 +9,8 @@ public class CCSMatrixBuilder implements CompressedMatrixBuilder {
     private int[] rows;
     private double[] values;
 
-    public CCS getCRSMatrix(){
-        return new CCS(values,rows,colPtr);
+    public CCS getCRSMatrix() {
+        return new CCS(values, rows, colPtr);
     }
 
     @Override

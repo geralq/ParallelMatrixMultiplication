@@ -7,20 +7,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class TiledMatrixMultiplication implements MatrixMultiplication{
+public class TiledMatrixMultiplication implements MatrixMultiplication {
 
     private ExecutorService executorService;
 
     @Override
     public Matrix multiply(Matrix a, Matrix b) {
         executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        return new DenseMatrix( multiply(a.getValues(), b.getValues()), a.getSize());
+        return new DenseMatrix(multiply(a.getValues(), b.getValues()), a.getSize());
     }
 
     private double[][] multiply(double[][] a, double[][] b) {
         int size = a.length;
         double[][] c = new double[size][size];
-        int blockSize = size/2;
+        int blockSize = calculateBlockSize(size);
+        System.out.println(blockSize);
         for (int i = 0; i < size; i += blockSize) {
             for (int j = 0; j < size; j += blockSize) {
                 for (int k = 0; k < size; k += blockSize) {
@@ -50,5 +51,14 @@ public class TiledMatrixMultiplication implements MatrixMultiplication{
         }
     }
 
+    private int calculateBlockSize(int size) {
+        int threadsNumber = Runtime.getRuntime().availableProcessors();
+        for (int i = threadsNumber; i > 0; i = i - 2) {
+            if (size % i == 0) {
+                return size / i;
+            }
+        }
+        return size;
+    }
 
 }

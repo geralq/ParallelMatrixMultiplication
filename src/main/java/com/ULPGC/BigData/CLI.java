@@ -22,14 +22,14 @@ public class CLI {
         System.out.println("Welcome to the matrix multiplication system.");
         System.out.println("Please write the format of the matrix multiplication result.");
         Scanner read = new Scanner(System.in);
-        while (true){
+        while (true) {
 
             String format = read.next();
 
             switch (format) {
                 case "CRS" -> {
                     CRSMatrixBuilder crsMatrixBuilder = new CRSMatrixBuilder();
-                    crsMatrixBuilder.compress(matrix.getValues(),matrix.getSize());
+                    crsMatrixBuilder.compress(matrix.getValues(), matrix.getSize());
                     CRS crs = crsMatrixBuilder.getCRSMatrix();
                     System.out.println("RowPointer :" + Arrays.toString(crs.rowPtr()));
                     System.out.println("Columns :" + Arrays.toString(crs.columns()));
@@ -39,7 +39,7 @@ public class CLI {
                 }
                 case "CCS" -> {
                     CCSMatrixBuilder ccsMatrixBuilder = new CCSMatrixBuilder();
-                    ccsMatrixBuilder.compress(matrix.getValues(),matrix.getSize());
+                    ccsMatrixBuilder.compress(matrix.getValues(), matrix.getSize());
                     CCS ccs = ccsMatrixBuilder.getCRSMatrix();
                     System.out.println("ColPointer :" + Arrays.toString(ccs.colPtr()));
                     System.out.println("Rows :" + Arrays.toString(ccs.rows()));
@@ -49,13 +49,13 @@ public class CLI {
                 }
                 case "COO" -> {
                     COOMatrixBuilder cooMatrixBuilder = new COOMatrixBuilder();
-                    cooMatrixBuilder.compress(matrix.getValues(),matrix.getSize());
+                    cooMatrixBuilder.compress(matrix.getValues(), matrix.getSize());
                     COO coo = cooMatrixBuilder.getCOOMatrix();
                     List<Coordinate> coordinateList = coo.coordinates();
                     List<Integer> row = new ArrayList<>();
                     List<Integer> column = new ArrayList<>();
                     List<Double> value = new ArrayList<>();
-                    for (Coordinate coordinate : coordinateList){
+                    for (Coordinate coordinate : coordinateList) {
                         row.add(coordinate.row());
                         column.add(coordinate.col());
                         value.add(coordinate.value());

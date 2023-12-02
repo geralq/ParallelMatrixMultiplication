@@ -1,11 +1,13 @@
-package com.ULPGC.BigData.Matrices;
+package com.ULPGC.BigData.Matrices.Builders;
 
 import com.ULPGC.BigData.CompressedMatrices.Matrices.Coordinate;
+import com.ULPGC.BigData.Matrices.DenseMatrix;
 
 import java.util.List;
 
-public class DenseMatrixBuilder {
+public class DenseMatrixBuilder implements MatrixBuilder{
 
+    @Override
     public DenseMatrix build(List<Coordinate> coordinates, List<Integer> size) {
         int rows = size.get(0);
         int cols = size.get(1);
@@ -25,6 +27,6 @@ public class DenseMatrixBuilder {
             values[row][col] = value;
         }
 
-        return new DenseMatrix(values,size);
+        return new DenseMatrix(values, size);
     }
 }

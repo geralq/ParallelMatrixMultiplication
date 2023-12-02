@@ -1,6 +1,7 @@
 package com.ULPGC.BigData.CompressedMatrices.Builders;
 
 import com.ULPGC.BigData.CompressedMatrices.Matrices.CRS;
+
 import java.util.List;
 
 public class CRSMatrixBuilder implements CompressedMatrixBuilder {
@@ -9,10 +10,10 @@ public class CRSMatrixBuilder implements CompressedMatrixBuilder {
     private int[] columns;
     private int[] rowPtr;
 
-    public CRS getCRSMatrix(){
-        return new CRS(values,columns,rowPtr);
+    public CRS getCRSMatrix() {
+        return new CRS(values, columns, rowPtr);
     }
-    
+
     @Override
     public void compress(double[][] coordinates, List<Integer> size) {
         int rows = size.get(0);
