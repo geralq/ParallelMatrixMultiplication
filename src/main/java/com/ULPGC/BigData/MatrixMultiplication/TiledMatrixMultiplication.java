@@ -10,25 +10,28 @@ import java.util.concurrent.TimeUnit;
 public class TiledMatrixMultiplication implements MatrixMultiplication {
 
     private ExecutorService executorService;
+    private int threadsNumber;
 
     @Override
     public Matrix multiply(Matrix a, Matrix b) {
-        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        return new DenseMatrix(multiply(a.getValues(), b.getValues()), a.getSize());
+        threadsNumber = Runtime.getRuntime().availableProcessors();
+        executorService = Executors.newFixedThreadPool(threadsNumber);
+
+        double[][] result = multiply(a.getValues(), b.getValues());
+        return new DenseMatrix(result, a.getSize());
     }
 
     private double[][] multiply(double[][] a, double[][] b) {
         int size = a.length;
-        double[][] c = new double[size][size];
         int blockSize = calculateBlockSize(size);
-        System.out.println(blockSize);
+        double[][] c = new double[size][size];
         for (int i = 0; i < size; i += blockSize) {
             for (int j = 0; j < size; j += blockSize) {
                 for (int k = 0; k < size; k += blockSize) {
-                    int ii = i;
-                    int jj = j;
-                    int kk = k;
-                    executorService.execute(() -> submit(a, b, ii, blockSize, size, jj, kk, c));
+                    final int ii = i;
+                    final int jj = j;
+                    final int kk = k;
+                    executorService.submit(() -> submit(a, b, ii, blockSize, size, jj, kk, c));
                 }
             }
         }
@@ -42,9 +45,10 @@ public class TiledMatrixMultiplication implements MatrixMultiplication {
     }
 
     private void submit(double[][] a, double[][] b, int i, int blockSize, int size, int j, int k, double[][] c) {
-        for (int ii = i; ii < Math.min(i + blockSize, size); ii++) {
-            for (int jj = j; jj < Math.min(j + blockSize, size); jj++) {
-                for (int kk = k; kk < Math.min(k + blockSize, size); kk++) {
+
+        for (int ii = i; ii < i + blockSize && ii < size; ii++) {
+            for (int jj = j; jj < j + blockSize && jj < size; jj++) {
+                for (int kk = k; kk < k + blockSize && kk < size; kk++) {
                     c[ii][jj] += a[ii][kk] * b[kk][jj];
                 }
             }
@@ -52,7 +56,6 @@ public class TiledMatrixMultiplication implements MatrixMultiplication {
     }
 
     private int calculateBlockSize(int size) {
-        int threadsNumber = Runtime.getRuntime().availableProcessors();
         for (int i = threadsNumber; i > 0; i = i - 2) {
             if (size % i == 0) {
                 return size / i;

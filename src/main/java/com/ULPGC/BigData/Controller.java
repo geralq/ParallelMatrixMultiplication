@@ -12,17 +12,14 @@ import java.util.List;
 
 public class Controller implements MatrixMultiplication, MatrixBuilder {
 
-    private final String path = "C:\\Users\\gerar\\OneDrive\\Escritorio\\ULPGC\\BD\\bcsstk16.mtx";
+    private final String path = "Introduce the path to your .mtx file";
     private final SparseMatrixReader sparseMatrixReader = new SparseMatrixReader();
     private final CLI cli = new CLI();
 
     public void execute() {
         sparseMatrixReader.readFile(path);
-        Matrix matrix =  build(sparseMatrixReader.getCoordinates(), sparseMatrixReader.getSize());
-        long start = System.currentTimeMillis();
+        Matrix matrix = build(sparseMatrixReader.getCoordinates(), sparseMatrixReader.getSize());
         Matrix result = multiply(matrix, matrix);
-        long end = System.currentTimeMillis();
-        System.out.println(end - start);
         cli.cli(result);
     }
 
